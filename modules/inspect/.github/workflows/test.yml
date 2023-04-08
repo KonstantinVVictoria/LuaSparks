@@ -1,0 +1,43 @@
+name: test
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        luaVersion: ["5.1", "5.2", "5.3", "5.4", "luajit", "luajit-openresty"]
+
+    steps:
+    - uses: actions/checkout@master
+
+    - uses: leafo/gh-actions-lua@v8.0.0
+      with:
+        luaVersion: ${{ matrix.luaVersion }}
+
+    - uses: leafo/gh-actions-luarocks@v4.0.0
+
+    - name: make_dev
+      run: |
+        make dev
+        luarocks make
+
+    - name: check_generation
+      run: |
+        cp inspect.lua inspect.lua.bak
+        make gen
+        if ! cmp --silent inspect.lua inspect.lua.bak ; then
+          echo "The generated inspect.lua is different from the one in the repo." \
+               "Please make your modifications in inspect.tl, regenerate with 'make dev && make'," \
+               "and commit both inspect.tl and inspect.lua in your Pull Request"
+          exit 1
+        fi
+
+    - name: luacheck
+      run: luacheck inspect.lua
+
+    - name: test
+      run: |
+        busted -o utfTerminal
