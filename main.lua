@@ -6,6 +6,7 @@ local HTML = {
     Component = {}
 }
 local HTML_Element_Cache ={}
+local _js_cache = ""
 
 function HTML:new_webpage()
     local Page = {
@@ -23,9 +24,10 @@ function HTML:new_webpage()
         local meta = HTML.Element:new("meta")
         local template =
             html({lang="en"}){
-                head() (
+                head() {
+                    (script)({src="js/js_comp.js"}){}(script),
                     Page.Head
-                )(head),
+                }(head),
                 body()(
                     Page.Body
                 )(body),
@@ -34,9 +36,13 @@ function HTML:new_webpage()
                 }(footer)
             }(html)
         io.write(Parse_Element(template))
+        file = io.open(path .."./js/" .. "js_comp.js", "w")
+        io.output(file)
+        io.write(_js_cache)
     end
     return Page
 end
+
 function Style(...)
     local accumumaltor = ""
     local style_object = {}
@@ -49,6 +55,7 @@ function Style(...)
     end
     return accumumaltor
 end
+
 function HTML.Element:new(tag)
     local Element
     Element = function(config)
@@ -138,6 +145,28 @@ function Parse_Element(element)
     local HTML_Text = string.format("<%s %s>%s</%s>", element.tag, attributes, children, element.tag)
     return HTML_Text
 end
+
+
+function JS(function_name)
+    local file = io.open("./javascript/"..function_name..".js", "r")
+    io.input(file)
+    local content = io.read("*all")
+    _js_cache = _js_cache .. content
+    return function(...)
+        local args = ""
+        for i, argument in ipairs({...}) do
+
+            if type(argument) == "string" then
+                args = args .. "'" .. argument .. "'" .. ", "
+            elseif type(argument) == "boolean" or type(argument) == "number" then
+                args = args  .. tostring(argument) .. ", "
+            end
+        end
+        local function_invoc = function_name .. "(" .. args:sub(0,#args - 2)  .. ")"      
+        return function_invoc
+    end
+end
+
 
 function TableConcat(t1, t2)
     for key, value in pairs(t2) do
@@ -269,4 +298,5 @@ ul = HTML.Element:new("ul")
 var = HTML.Element:new("var")
 video = HTML.Element:new("video")
 wbr = HTML.Element:new("wbr")
+
 return HTML

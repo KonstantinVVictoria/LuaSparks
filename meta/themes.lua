@@ -1,5 +1,6 @@
 return {
     main_color = "#4287f5", 
+    tier_color = "rgb(212, 177, 1)",
     centered = {
         display = "flex",
         ["align-items"] = "center",

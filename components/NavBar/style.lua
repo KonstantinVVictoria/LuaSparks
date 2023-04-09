@@ -12,14 +12,17 @@ return {
             display = "flex",
             ["justify-content"]  = "space-evenly",
             color = _themes.main_color,
-            position = "sticky",
-            ["box-shadow"] = "0px 0px 20px rgba(0,0,0,0.2)"
+            position = "fixed",
+            top = "0",
+            ["box-shadow"] = "0px 0px 20px rgba(0,0,0,0.2)",
+            ["background-color"] = "white"
         }
         ),
     NavBar_Item = Style({
         ["font-size"] = "1rem",
             margin = "0px",
             ["font-weight"] = "800",
-            ["cursor"] = "pointer"
+            ["cursor"] = "pointer",
+            ["transition"] = "color 200ms ease"
         }, _themes.centered)
 }

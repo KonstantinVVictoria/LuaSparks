@@ -1,10 +1,9 @@
 _route_path = './?.lua;' .. package.path
 _themes = require("./meta/themes")
 package.path = _route_path
-local inspect = require('./modules/inspect/inspect')
 local NavBar = require("./components/NavBar/NavBar")
 local Main = require("./components/Main/Main")
-local SideBar = require("./components/SideBar/SideBar")
+local InfoBar = require("./components/InfoBar/InfoBar")
 local HTML = require("main")
 
 local MainPage = HTML:new_webpage()
@@ -24,8 +23,55 @@ MainPage.Head = {
 }
 
 MainPage.Body = {
-    NavBar()(),
-    Main()(),
+    (NavBar)()(),
+    (Main)(){
+        (h1)({
+            id="SiteLogo",
+            onclick=JS("helloWorld")(),
+            style=Style({
+                color = "white",
+                ["font-size"] = "2rem",
+                padding = "1rem",
+                ["text-align"] = "center"
+        })}){
+            "LuaSparks✨"
+        }(h1),
+        (h1)({style=Style({
+                color = "white",
+                ["font-size"] = "1.5rem",
+                padding = "1rem",
+                ["text-align"] = "center"
+        })}){
+            "A fast, light Lua front-end framework."
+        }(h1)
+    }(Main),
+    (InfoBar)()(),
+    (Main)(){
+        (h1)({style=Style({
+                color = "white",
+                ["font-size"] = "2rem",
+                padding = "1rem",
+                ["text-align"] = "center"
+        })}){
+            "Download on Github!"
+        }(h1),
+        (img)({
+            class="GithubLogo",
+            src="images/github.png", 
+            id="DownloadLogo",
+            onclick= JS("directTo")("https://github.com/KonstantinVVictoria/LuaSparks"),
+            style=Style({
+                ["font-size"] = "1.5rem",
+                padding = "1rem",
+                ["text-align"] = "center",
+                filter="invert()",
+                height="8rem",
+                width="8rem",
+                cursor="pointer",
+                opacity="100%",
+                transition="opacity 200ms ease",
+        })})()
+    }(Main)
 }
 
 MainPage.write_to("./website/")

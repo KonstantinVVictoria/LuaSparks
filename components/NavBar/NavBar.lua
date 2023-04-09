@@ -10,16 +10,16 @@ end
 
 local navbar_items = {
     navbar_item("Home", ""),
-    navbar_item("FAQ", ""),
+    navbar_item("Download", "#DownloadLogo"),
     navbar_item("Contact Me", ""),       
 }
 
 
 local function NavBarItem(params)
     return 
-    h2({class="navbar-item", href=params.link, style=style.NavBar_Item}){
+    (a)({class="navbar-item", href=params.link, style=style.NavBar_Item}){
         params.title
-    }(h2)
+    }(a)
 end
 
 return HTML.Component:new(function()
