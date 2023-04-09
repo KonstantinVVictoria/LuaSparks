@@ -1,6 +1,5 @@
 package.path = _route_path
-local inspect = require('./modules/inspect/inspect')
-_themes = require("./meta/themes")
+inspect = require('./modules/inspect/inspect')
 
 local HTML = {
     Element = {},
@@ -78,15 +77,16 @@ end
 
 function HTML.Component:new(component)
     local Element
-    Element = function(config)
-        return function(children)
-            if children == nil then
+    Element = function(config_arg)
+        local config = config_arg or {}
+        return function(children_arg)
+            if children_arg == nil then
                 return component(config)
             end
 
             return function(element_closing)
                 if element_closing == Element then
-                    config.children = children
+                    config.children = children_arg
                     return component(config)
                 else
                     return nil
@@ -105,7 +105,11 @@ function Parse_Element(element)
     end
 
     for attr_name, attr_value in pairs(element.config or {}) do
-        attributes = attributes .. attr_name .. "=" .. "\"".. attr_value .. "\"".. " "
+        if type(attr_value) == "string" then
+            attributes = attributes .. attr_name .. "=" .. "\"".. attr_value .. "\"".. " "
+        elseif type(attr_value) == "boolean" then
+            attributes = attributes .. attr_name .. " "            
+        end
     end
     attributes = attributes:sub(0, #attributes - 1)
     local children = ""
@@ -118,6 +122,16 @@ function Parse_Element(element)
         for _, value in ipairs(element.children) do
             if value.tag and type(value) == "table" then
                 children = children .. Parse_Element(value)
+            elseif value.tag == nil and type(value) == "table" then
+                for i, iterable_element in ipairs(value) do
+                    if type(iterable_element) == "string" then
+                        children = children .. iterable_element
+                    elseif type(iterable_element) == "table" then
+                        children = children .. Parse_Element(iterable_element)                       
+                    end
+                end
+            elseif type(value) == "string" then
+                children = children.. value
             end
         end
     end
