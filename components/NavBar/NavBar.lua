@@ -1,4 +1,3 @@
-local HTML = require("main")
 local style = require("./components/NavBar/style")
 
 local function navbar_item(title, link)

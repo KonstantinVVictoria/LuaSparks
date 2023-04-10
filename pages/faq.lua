@@ -1,10 +1,7 @@
-_route_path = './?.lua;' .. package.path
 _themes = require("./meta/themes")
-package.path = _route_path
 local NavBar = require("./components/NavBar/NavBar")
 local Main = require("./components/Main/Main")
 local InfoBar = require("./components/InfoBar/InfoBar")
-local HTML = require("main")
 
 local MainPage = HTML:new_webpage()
 local config = {
@@ -82,8 +79,10 @@ MainPage.Body = {
 }
 
 MainPage.Footer = {
-    (p)({}){
+    (p)({style={color="black"}}){
         "Created by Konstantin Victoria, 2023"
     }(p)
 }
-MainPage.write_to("./website/")
+
+
+return MainPage

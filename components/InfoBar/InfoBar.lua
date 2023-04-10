@@ -1,5 +1,4 @@
 package.path = _route_path
-local HTML = require("main")
 local style = require("./components/InfoBar/style")
 local Card = require("./components/InfoBar/Card")
 

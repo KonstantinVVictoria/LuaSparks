@@ -1,5 +1,4 @@
 package.path = _route_path
-local HTML = require("main")
 local style = require("./components/InfoBar/style")
 
 return HTML.Component:new(function(config)
