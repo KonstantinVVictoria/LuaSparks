@@ -1,46 +1,46 @@
-._0_2{margin:0;}
-._0_1{margin:0px;}
-._13_1{position:fixed;}
-._19_1{overflow:hidden;}
-._4_1{cursor:pointer;}
-._25_1{opacity:100%;}
-._10_2{background-color:#4287f5;}
-._10_1{background-color:white;}
-._7_3{font-size:1.5rem;}
-._7_1{font-size:1rem;}
-._7_4{font-size:600%;}
-._7_2{font-size:2rem;}
-._23_1{box-sizing:border-box;}
-._12_1{top:0;}
-._15_1{text-align:center;}
-._18_1{flex-direction:column;}
-._8_1{width:100vw;}
-._8_4{width:8rem;}
-._8_2{width:11rem;}
-._8_3{width:100%;}
-._1_1{font-weight:800;}
-._21_1{border-radius:15px;}
-._3_2{transition:opacity 200ms ease;}
-._3_1{transition:color 200ms ease;}
+._22_1{overflow-x:auto;}
+._8_1{top:0;}
 ._16_2{flex-grow:4;}
 ._16_1{flex-grow:1;}
-._24_1{gap:1rem;}
-._6_1{align-items:center;}
-._26_1{filter:invert();}
-._22_1{overflow-x:auto;}
-._11_3{color:black;}
-._11_2{color:white;}
-._11_1{color:#4287f5;}
-._20_1{flex-shrink:0;}
-._17_1{height:100vh;}
+._15_1{text-align:center;}
+._26_1{opacity:100%;}
 ._17_2{height:15rem;}
+._17_1{height:100vh;}
 ._17_3{height:8rem;}
-._9_1{padding:1rem 0rem;}
-._9_2{padding:1rem;}
-._5_1{display:flex;}
-._2_1{justify-content:center;}
-._2_2{justify-content:space-evenly;}
-._14_1{box-shadow:0px 0px 20px rgba(0,0,0,0.2);}
-._14_4{box-shadow:0px 0px 30px rgba(0,0,0,0.3);}
-._14_3{box-shadow:0px 0px 25px rgba(0,0,0,0.2);}
-._14_2{box-shadow:0px 10px 30px rgba(0,0,0,0.3);}
+._1_1{font-weight:800;}
+._25_1{filter:invert();}
+._24_1{box-sizing:border-box;}
+._6_1{align-items:center;}
+._14_1{background-color:white;}
+._14_2{background-color:#4287f5;}
+._0_1{cursor:pointer;}
+._23_1{gap:1rem;}
+._21_1{flex-shrink:0;}
+._20_1{border-radius:15px;}
+._12_1{width:100vw;}
+._12_2{width:11rem;}
+._12_3{width:100%;}
+._12_4{width:8rem;}
+._5_1{justify-content:center;}
+._5_2{justify-content:space-evenly;}
+._4_1{display:flex;}
+._18_1{flex-direction:column;}
+._10_1{padding:1rem 0rem;}
+._10_2{padding:1rem;}
+._19_1{overflow:hidden;}
+._11_2{color:white;}
+._11_3{color:black;}
+._11_1{color:#4287f5;}
+._3_2{transition:opacity 200ms ease;}
+._3_1{transition:color 200ms ease;}
+._13_3{box-shadow:0px 0px 25px rgba(0,0,0,0.2);}
+._13_4{box-shadow:0px 0px 30px rgba(0,0,0,0.3);}
+._13_1{box-shadow:0px 0px 20px rgba(0,0,0,0.2);}
+._13_2{box-shadow:0px 10px 30px rgba(0,0,0,0.3);}
+._2_2{margin:0;}
+._2_1{margin:0px;}
+._9_1{position:fixed;}
+._7_4{font-size:600%;}
+._7_3{font-size:1.5rem;}
+._7_2{font-size:2rem;}
+._7_1{font-size:1rem;}

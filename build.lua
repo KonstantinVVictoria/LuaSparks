@@ -5,5 +5,5 @@ local index = require("./pages/index")
 local faq = require("./pages/faq")
 
 index.write_to("/index.html")
-faq.write_to("./faq.html")
+faq.write_to("/faq.html")
 HTML:render()
