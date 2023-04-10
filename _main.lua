@@ -7,66 +7,6 @@ local HTML = {
 }
 local HTML_Element_Cache ={}
 local _js_cache = ""
-local CSS_cache = {}
-
-local _style_number = 0
-local function CSS_cacher(css_obj)
-    local style_object = {}
-    if #css_obj > 1 then
-        for _, style in ipairs(css_obj) do
-            TableConcat(style_object, style)
-        end
-    else
-        style_object = css_obj
-    end
-    for property, value in pairs(style_object) do
-        if CSS_cache[property] == nil then
-            CSS_cache[property] = {}
-            CSS_cache[property]._counter = 0
-            CSS_cache[property]._style_number = _style_number
-            _style_number =  _style_number + 1
-        end
-
-        if(CSS_cache[property][value]  == nil ) then
-            CSS_cache[property]._counter = CSS_cache[property]._counter + 1
-            CSS_cache[property][value] = CSS_cache[property]._counter             
-        end
-    end
-    
-    return css_obj
-end
-
-local function CSS(css_obj)
-    local accumumaltor = ""
-    local style_object = {}
-    local _css_cache_class = ""
-    if #css_obj > 1 then
-        for _, style in ipairs(css_obj) do
-            TableConcat(style_object, style)
-        end
-    else
-        style_object = css_obj
-    end
-    for property, value in pairs(style_object) do
-        accumumaltor = accumumaltor .. property .. ":" .. value .. ";"
-        local value_num = CSS_cache[property][value]
-        local style_num = CSS_cache[property]._style_number
-        _css_cache_class = _css_cache_class .. "_" .. style_num .. "_" .. value_num .. " "
-    end
-    return {style = accumumaltor, css_class = _css_cache_class}
-end
-
-local function GenerateCSS()
-    local css_file = ""
-    for property, values in pairs(CSS_cache) do
-        for value, num in pairs(values) do
-            if not(value == "_counter" or value == "_style_number") then
-                css_file = css_file .. "._" .. values._style_number .. "_" .. num .. "{".. property .. ":" .. value ..";}\n"
-            end
-        end
-    end
-    return css_file
-end
 
 function HTML:new_webpage()
     local Page = {
@@ -75,7 +15,7 @@ function HTML:new_webpage()
         Footer = {}
     }
     Page.write_to = function(path)
-        local file = io.open(path.. "index.html", "w")
+        local file = io.open(path .. "index.html", "w")
         io.output(file)
         local html = HTML.Element:new("html")
         local body = HTML.Element:new("body")
@@ -96,13 +36,9 @@ function HTML:new_webpage()
                 }(footer)
             }(html)
         io.write(Parse_Element(template))
-        file = io.open("./website/js/" .. "js_comp.js", "w")
+        file = io.open(path .."./js/" .. "js_comp.js", "w")
         io.output(file)
         io.write(_js_cache)
-        local CSSFile = GenerateCSS()
-        file = io.open("./website/".. "css_comp.css", "w")
-        io.output(file)
-        io.write(CSSFile)
     end
     return Page
 end
@@ -115,9 +51,6 @@ function HTML.Element:new(tag)
             children = "",
         }
         element.config = config
-        if element.config and element.config.style then
-            CSS_cacher(element.config.style)         
-        end
         return function(children)
             if children == nil then
                 element.children = nil
@@ -160,18 +93,9 @@ end
 
 function Parse_Element(element)
     if element.tag == nil then return end
-    local attributes = ""
-    
+    local attributes = element.config and element.config.class and ("class=" .. "\"".. element.config.class .. "\"" .. " ") or ""
     if element.config then
-        if element.config.style then
-            local CSS_info = CSS(element.config.style) 
-            if  element.config.class  == nil then element.config.class = "" end
-            element.config.class = element.config.class .. " " .. CSS_info.css_class 
-        end   
-        if element.config.class then
-            attributes =  ("class=" .. "\"".. element.config.class .. "\"" .. " ") 
-            element.config.class = nil
-        end
+        element.config.class = nil
     end
 
     for attr_name, attr_value in pairs(element.config or {}) do
@@ -207,6 +131,19 @@ function Parse_Element(element)
     end
     local HTML_Text = string.format("<%s %s>%s</%s>", element.tag, attributes, children, element.tag)
     return HTML_Text
+end
+
+function CSS(...)
+    local accumumaltor = ""
+    local style_object = {}
+
+    for _, style in ipairs({...}) do
+        TableConcat(style_object, style)
+    end
+    for property, value in pairs(style_object) do
+        accumumaltor = accumumaltor .. property .. ":" .. value .. ";"
+    end
+    return accumumaltor
 end
 
 function JS(function_name)

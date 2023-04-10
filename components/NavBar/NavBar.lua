@@ -29,7 +29,7 @@ return HTML.Component:new(function()
     end
 
     return 
-    nav({class="NavBarContainer", style=style.NavBar_Container}){
+    (nav)({class="NavBarContainer", style=style.NavBar_Container}){
         NavBarItems
     }(nav)
 

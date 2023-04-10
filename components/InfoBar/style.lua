@@ -1,7 +1,7 @@
 package.path = _route_path
 
 return {
-    Cards = Style({
+    Cards = {
         ["background-color"] = "white",
         width = "100%",
         display = "flex",
@@ -12,8 +12,8 @@ return {
         padding = "1rem",
         gap = "1rem",
         ["justify-content"] = "center"
-    }),
-    CardContainer = Style({
+    },
+    CardContainer = {
         height ="15rem",
         display = "flex",
         ["flex-direction"] = "column",
@@ -22,8 +22,8 @@ return {
         ["border-radius"] = "15px",
         ["overflow"] = "hidden",
         ["flex-shrink"] = 0,
-    }),
-    CardImage = Style({
+    },
+    CardImage = {
         display = "flex",
         ["align-items"] = "center",
         ["justify-content"] = "center",
@@ -31,12 +31,12 @@ return {
         ["font-size"] = "600%",
         padding = "1rem",
         margin="0"
-    }),
-    CardTitle = Style({
+    },
+    CardTitle = {
          width = "100%",
          ["flex-grow"] = "1",
          display = "flex",
          ["justify-content"] = "center",
          color = _themes.main_color
-    })
+    }
 }

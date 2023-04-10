@@ -12,12 +12,20 @@ body {
   overscroll-behavior-y: none;
   overflow-x: hidden;
 }
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 a {
   color: inherit;
   text-decoration: none;
 }
 * {
   font-family: "Quicksand", sans-serif;
+  color: white;
 }
 
 .navbar-item:hover {
