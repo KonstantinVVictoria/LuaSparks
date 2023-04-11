@@ -5,19 +5,23 @@ local Card = require("./components/InfoBar/Card")
 local infos = {
     {
         title="Fast!",
-        description = "⚡"
+        description = "⚡",
+        caption = "Fast compile time!"
     },
     {
         title="Reliable",
-        description = "💪"
+        description = "💪",
+        caption = "Built with no side-effects in mind."
     },
     {
         title="Light",
-        description = "🪶"
+        description = "🪶",
+        caption = "Ultra-lightweight; Cached JS and CSS!"
     },
     {
         title="Maintainable",
-        description = "✏️"
+        description = "✏️",
+        caption = "Clean, component-based styling."
     }
 }
 return HTML.Component:new(function(config)

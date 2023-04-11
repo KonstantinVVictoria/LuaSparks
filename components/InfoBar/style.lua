@@ -22,6 +22,7 @@ return {
         ["border-radius"] = "15px",
         ["overflow"] = "hidden",
         ["flex-shrink"] = 0,
+        cursor = "pointer"
     },
     CardImage = {
         display = "flex",
@@ -32,11 +33,10 @@ return {
         padding = "1rem",
         margin="0"
     },
-    CardTitle = {
-         width = "100%",
-         ["flex-grow"] = "1",
-         display = "flex",
-         ["justify-content"] = "center",
-         color = _themes.main_color
-    }
+        CardTitle = {
+        ["flex-grow"] = "1",
+        display = "flex",
+        ["justify-content"] = "center",
+        color = _themes.main_color, 
+    },
 }

@@ -5,15 +5,15 @@ HTML = {
     Component = {}
 }
 local HTML_Element_Cache ={}
-local _js_cache = ""
+local _js_cache = {}
 local CSS_cache = {}
-
+local run_start = os.clock()
 local _style_number = 0
 local function CSS_cacher(css_obj)
     local style_object = {}
     if #css_obj > 1 then
         for _, style in ipairs(css_obj) do
-            TableConcat(style_object, style)
+            table_concat(style_object, style)
         end
     else
         style_object = css_obj
@@ -41,7 +41,7 @@ local function CSS(css_obj)
     local _css_cache_class = ""
     if #css_obj > 1 then
         for _, style in ipairs(css_obj) do
-            TableConcat(style_object, style)
+            table_concat(style_object, style)
         end
     else
         style_object = css_obj
@@ -70,7 +70,12 @@ local _webpages = {}
 function HTML:render()
     file = io.open("./website/" .. "js_comp.js", "w")
     io.output(file)
-    io.write(_js_cache)
+    local js_file = ""
+    for _, value in pairs(_js_cache) do
+        js_file = js_file .. value      
+    end
+    io.write(js_file)
+
     local CSSFile = GenerateCSS()
     file = io.open("./website/".. "css_comp.css", "w")
     io.output(file)
@@ -78,8 +83,10 @@ function HTML:render()
     for path, webpage in pairs(_webpages) do
         file = io.open("./website".. path, "w")
         io.output(file)
-        io.write(Parse_Element(webpage))        
+        io.write(HTML:stringify(webpage))        
     end
+    local run_end  = os.clock()
+    print("Build Sucessful!", "Compile time:", run_end - run_start, "seconds")
 end
 function HTML:new_webpage()
     local Page = {
@@ -98,7 +105,7 @@ function HTML:new_webpage()
         local template =
             html({lang="en"}){
                 head() {
-                    (script)({src="js/js_comp.js"}){}(script),
+                    (script)({src="js_comp.js", deferred=true}){}(script),
                     Page.Head
                 }(head),
                 body()(
@@ -165,68 +172,73 @@ function HTML.Component:new(component)
     return Element
 end
 
-function Parse_Element(element)
-    if element.tag == nil then return end
-    local attributes = ""
-    
-    if element.config then
-        if element.config.style then
-            local CSS_info = CSS(element.config.style) 
-            if  element.config.class  == nil then element.config.class = "" end
-            element.config.class = element.config.class .. " " .. CSS_info.css_class 
-        end   
-        if element.config.class then
-            attributes =  ("class=" .. "\"".. element.config.class .. "\"" .. " ") 
-            element.config.class = nil
-        end
-    end
+function HTML:stringify(elements)
+    local HTML_Text = ""
+    for _, element in ipairs(elements.tag and {elements} or elements) do
+        if element.tag ~= nil then
+            local attributes = ""        
+            if element.config then
+                if element.config.style then
+                    local CSS_info = CSS(element.config.style) 
+                    if  element.config.class  == nil then element.config.class = "" end
+                    element.config.class = element.config.class .. " " .. CSS_info.css_class 
+                end   
+                if element.config.class then
+                    attributes =  ("class=" .. "\"".. element.config.class .. "\"" .. " ") 
+                    element.config.class = nil
+                end
+            end
 
-    for attr_name, attr_value in pairs(element.config or {}) do
-        if type(attr_value) == "string" then
-            attributes = attributes .. attr_name .. "=" .. "\"".. attr_value .. "\"".. " "
-        elseif type(attr_value) == "boolean" then
-            attributes = attributes .. attr_name .. " "            
-        end
-    end
-    attributes = attributes:sub(0, #attributes - 1)
-    local children = ""
-    if element.children == nil then
-        return string.format("<%s %s/>", element.tag, attributes)
-    end
-    if type(element.children) == "string" then
-        children = element.children
-    else
-        for _, value in ipairs(element.children) do
-            if value.tag and type(value) == "table" then
-                children = children .. Parse_Element(value)
-            elseif value.tag == nil and type(value) == "table" then
-                for i, iterable_element in ipairs(value) do
-                    if type(iterable_element) == "string" then
-                        children = children .. iterable_element
-                    elseif type(iterable_element) == "table" then
-                        children = children .. Parse_Element(iterable_element)                       
+            for attr_name, attr_value in pairs(element.config or {}) do
+                if type(attr_value) == "string" then
+                    attributes = attributes .. attr_name .. "=" .. "\"".. attr_value .. "\"".. " "
+                elseif type(attr_value) == "boolean" then
+                    attributes = attributes .. attr_name .. " "            
+                end
+            end
+            attributes = attributes:sub(0, #attributes - 1)
+            local children = ""
+            if element.children == nil then
+                return string.format("<%s %s/>", element.tag, attributes)
+            end
+            if type(element.children) == "string" then
+                children = element.children
+            else
+                for _, value in ipairs(element.children) do
+                    if value.tag and type(value) == "table" then
+                        children = children .. HTML:stringify(value)
+                    elseif value.tag == nil and type(value) == "table" then
+                        for i, iterable_element in ipairs(value) do
+                            if type(iterable_element) == "string" then
+                                children = children .. iterable_element
+                            elseif type(iterable_element) == "table" then
+                                children = children .. HTML:stringify(iterable_element)                       
+                            end
+                        end
+                    elseif type(value) == "string" then
+                        children = children.. value
                     end
                 end
-            elseif type(value) == "string" then
-                children = children.. value
             end
-        end
+            HTML_Text = HTML_Text .. string.format("<%s %s>%s</%s>", element.tag, attributes, children, element.tag)   
+        end     
     end
-    local HTML_Text = string.format("<%s %s>%s</%s>", element.tag, attributes, children, element.tag)
     return HTML_Text
 end
+function GenerateJS()
 
+end
 function JS(function_name)
     local file = io.open("./javascript/"..function_name..".js", "r")
     io.input(file)
     local content = io.read("*all")
-    _js_cache = _js_cache .. content
+    _js_cache[function_name] = content
     return function(...)
         local args = ""
         for i, argument in ipairs({...}) do
 
             if type(argument) == "string" then
-                args = args .. "'" .. argument .. "'" .. ", "
+                args = args .. "'" .. argument:gsub('"','&#34;'):gsub("'","&#39;") .. "'" .. ", "
             elseif type(argument) == "boolean" or type(argument) == "number" then
                 args = args  .. tostring(argument) .. ", "
             end
@@ -237,13 +249,20 @@ function JS(function_name)
 end
 
 
-function TableConcat(t1, t2)
+function table_concat(t1, t2)
     for key, value in pairs(t2) do
         t1[key] = value
     end
     return t1
 end
 
+function css_combine(...)
+    local css_composite = {}
+    for _, css_ruleset in ipairs({...}) do
+        table_concat(css_composite, css_ruleset)
+    end
+    return css_composite
+end
 
 a = HTML.Element:new("a")
 abbr = HTML.Element:new("abbr")
