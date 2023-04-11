@@ -37,6 +37,7 @@ return {
         ["flex-grow"] = "1",
         display = "flex",
         ["justify-content"] = "center",
-        color = _themes.main_color, 
+        color = _themes.main_color,
+        padding = "0rem 1rem",
     },
 }

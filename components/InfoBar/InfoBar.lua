@@ -32,7 +32,7 @@ return HTML.Component:new(function(config)
     end
     return 
     (section)({class="Cards", style=style.Cards}){
-        Cards
+        Cards,
     }(section)
 
 end)
