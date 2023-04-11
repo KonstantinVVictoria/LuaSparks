@@ -2,6 +2,7 @@
   <img src="https://github.com/KonstantinVVictoria/LuaSparks/blob/main/LuaSparksBanner.png?raw=true" alt="LuaSparks Banner"/>
 </p>
 
+
 # LuaSparks: A Lightweight, Stateless, and Modular LUA Front-End Framework
 
 LuaSparks is a cutting-edge front-end framework designed for developers who seek a clean, efficient, and scalable solution for building modern web applications. Built on the powerful LUA language, LuaSparks empowers developers to create rich user experiences with a focus on predictability, modularity, and performance.
