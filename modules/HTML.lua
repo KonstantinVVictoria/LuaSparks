@@ -4,11 +4,13 @@ HTML = {
     Element = {},
     Component = {}
 }
+
 local HTML_Element_Cache ={}
 local _js_cache = {}
 local CSS_cache = {}
 local run_start = os.clock()
 local _style_number = 0
+
 local function CSS_cacher(css_obj)
     local style_object = {}
     if #css_obj > 1 then
@@ -66,6 +68,7 @@ local function GenerateCSS()
     end
     return css_file
 end
+
 local _webpages = {}
 function HTML:render()
     file = io.open("./website/" .. "js_comp.js", "w")
@@ -88,6 +91,7 @@ function HTML:render()
     local run_end  = os.clock()
     print("Build Sucessful!", "Compile time:", run_end - run_start, "seconds")
 end
+
 function HTML:new_webpage()
     local Page = {
         Body = {},
@@ -225,9 +229,7 @@ function HTML:stringify(elements)
     end
     return HTML_Text
 end
-function GenerateJS()
 
-end
 function JS(function_name)
     local file = io.open("./javascript/"..function_name..".js", "r")
     io.input(file)

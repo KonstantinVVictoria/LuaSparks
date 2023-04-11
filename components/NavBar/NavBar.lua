@@ -31,5 +31,4 @@ return HTML.Component:new(function()
     (nav)({class="NavBarContainer", style=style.NavBar_Container}){
         NavBarItems
     }(nav)
-
 end)

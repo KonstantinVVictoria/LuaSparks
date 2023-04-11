@@ -24,6 +24,7 @@ local infos = {
         caption = "Clean, component-based styling."
     }
 }
+
 return HTML.Component:new(function(config)
     local Cards = {}
     for i, card in ipairs(infos) do
