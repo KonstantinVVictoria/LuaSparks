@@ -6,7 +6,7 @@ return {
         ["align-items"] = "center",
         ["justify-content"] = "center",
     },
-    centered_column_vertically = {
+    centered_column = {
         display = "flex",
         ["flex-direction"] = "column",
         ["align-items"] = "center",  

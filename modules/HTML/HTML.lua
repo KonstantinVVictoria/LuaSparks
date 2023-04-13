@@ -1,4 +1,5 @@
 package.path = _route_path
+_themes = require("./meta/themes")
 inspect = require('./modules/inspect/inspect')
 HTML = {
     Element = {},

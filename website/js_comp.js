@@ -25,11 +25,15 @@ StateTemplate.init = function () {
 };
 
 let State = StateTemplate.init();
-State.add("query", null).on_change(function (new_value) {
-  const element = document.querySelector('[state="query"]');
-  console.log(element);
-  element.textContent = new_value;
-});
+// State.add("user", null).on_change(function (new_value) {
+//   const element = document.querySelector('[state="user"]');
+//   element.innerText = new_value;
+// });
+
+// State.get("user").update("Konstantin");
+function helloWorld() {
+  State.get("user").update("Konstantin");
+}
 function directTo(link) {
   window.location.href = link;
 }
@@ -44,26 +48,4 @@ function clickCard(element_id, description, caption) {
     element.textContent = caption;
     element.style.fontSize = "1rem";
   }
-}
-function makeQuery() {
-  let key = "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";
-  const input = document.getElementById("OpenAI-input");
-  fetch("https://api.openai.com/v1/chat/completions", {
-    headers: {
-      Authorization: "Bearer " + key,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: input.value || "hello" }],
-    }),
-    method: "POST",
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      State.get("query").update(data.choices[0].message.content);
-    });
-}
-function helloWorld() {
-  State.get("user").update("Konstantin");
 }

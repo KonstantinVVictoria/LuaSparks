@@ -1,4 +1,4 @@
-_themes = require("./meta/themes")
+
 local NavBar = require("./components/NavBar/NavBar")
 local Main = require("./components/Main/Main")
 local InfoBar = require("./components/InfoBar/InfoBar")
