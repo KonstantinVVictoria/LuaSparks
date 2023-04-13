@@ -150,6 +150,6 @@ MainPage.Body = {
 ### Best Practices
 
 # Tentative Works
-1. Leveraging Markov Chains to design predictable state changes.
+1. Leveraging Markov Chains to design predictable state changes.✅
 2. React Component Support
 3. Href Query Parameter Handler
