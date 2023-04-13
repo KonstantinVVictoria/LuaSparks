@@ -7,7 +7,8 @@ HTML = {
 
 local HTML_Element_Cache ={}
 local _js_cache = {}
-local CSS_cache = {}
+local _state_cache = {}
+local _css_cache = {}
 local run_start = os.clock()
 local _style_number = 0
 
@@ -21,16 +22,16 @@ local function CSS_cacher(css_obj)
         style_object = css_obj
     end
     for property, value in pairs(style_object) do
-        if CSS_cache[property] == nil then
-            CSS_cache[property] = {}
-            CSS_cache[property]._counter = 0
-            CSS_cache[property]._style_number = _style_number
+        if _css_cache[property] == nil then
+            _css_cache[property] = {}
+            _css_cache[property]._counter = 0
+            _css_cache[property]._style_number = _style_number
             _style_number =  _style_number + 1
         end
 
-        if(CSS_cache[property][value]  == nil ) then
-            CSS_cache[property]._counter = CSS_cache[property]._counter + 1
-            CSS_cache[property][value] = CSS_cache[property]._counter             
+        if(_css_cache[property][value]  == nil ) then
+            _css_cache[property]._counter = _css_cache[property]._counter + 1
+            _css_cache[property][value] = _css_cache[property]._counter             
         end
     end
     
@@ -50,8 +51,8 @@ local function CSS(css_obj)
     end
     for property, value in pairs(style_object) do
         accumumaltor = accumumaltor .. property .. ":" .. value .. ";"
-        local value_num = CSS_cache[property][value]
-        local style_num = CSS_cache[property]._style_number
+        local value_num = _css_cache[property][value]
+        local style_num = _css_cache[property]._style_number
         _css_cache_class = _css_cache_class .. "_" .. style_num .. "_" .. value_num .. " "
     end
     return {style = accumumaltor, css_class = _css_cache_class}
@@ -59,7 +60,7 @@ end
 
 local function GenerateCSS()
     local css_file = ""
-    for property, values in pairs(CSS_cache) do
+    for property, values in pairs(_css_cache) do
         for value, num in pairs(values) do
             if not(value == "_counter" or value == "_style_number") then
                 css_file = css_file .. "._" .. values._style_number .. "_" .. num .. "{".. property .. ":" .. value ..";}\n"
@@ -71,9 +72,15 @@ end
 
 local _webpages = {}
 function HTML:render()
+    local js_file = ""
+    local file = io.open("./modules/HTML/State.js", "r")
+    io.input(file)
+    js_file = js_file .. io.read("*all") 
     file = io.open("./website/" .. "js_comp.js", "w")
     io.output(file)
-    local js_file = ""
+    for _, value in pairs(_state_cache) do
+        js_file = js_file .. value      
+    end   
     for _, value in pairs(_js_cache) do
         js_file = js_file .. value      
     end
@@ -109,8 +116,13 @@ function HTML:new_webpage()
         local template =
             html({lang="en"}){
                 head() {
-                    (script)({src="js_comp.js", deferred=true}){}(script),
-                    Page.Head
+                    (meta)({ charset = "UTF-8" })(),
+                    (meta)({ name = "viewport", content = "width=device-width, initial-scale=1.0" })(),
+                    (meta)({ ["http-equiv"] = "X-UA-Compatible", content = "ie=edge" })(),
+                    (script)({src="js_comp.js", defer=true}){}(script),
+                    (link)({rel="stylesheet", href="styles.css"})(),
+                    (link)({rel= "stylesheet", href="css_comp.css"})(),                     
+                    Page.Head,
                 }(head),
                 body()(
                     Page.Body
@@ -125,6 +137,13 @@ function HTML:new_webpage()
     return Page
 end
 
+local function State_cacher(state)
+    local file = io.open("./state/"..state..".js", "r")
+    io.input(file)
+    local content = io.read("*all") 
+    _state_cache[i] = content     
+
+end
 function HTML.Element:new(tag)
     local Element
     Element = function(config)
@@ -133,9 +152,14 @@ function HTML.Element:new(tag)
             children = "",
         }
         element.config = config
-        if element.config and element.config.style then
-            CSS_cacher(element.config.style)         
-        end
+        if element.config then            
+            if element.config.style then
+                CSS_cacher(element.config.style)
+            end    
+            if element.config.state then          
+                State_cacher(element.config.state)
+            end
+        end      
         return function(children)
             if children == nil then
                 element.children = nil
@@ -228,6 +252,10 @@ function HTML:stringify(elements)
         end     
     end
     return HTML_Text
+end
+
+function Query()
+
 end
 
 function JS(function_name)

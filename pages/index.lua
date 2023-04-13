@@ -9,12 +9,7 @@ local config = {
 }
 
 MainPage.Head = {
-    (meta)({ charset = "UTF-8" })(),
-    (meta)({ name = "viewport", content = "width=device-width, initial-scale=1.0" })(),
-    (meta)({ ["http-equiv"] = "X-UA-Compatible", content = "ie=edge" })(),
-    (title)(){config.website_title}(title),
-    (link)({rel="stylesheet", href="styles.css"})(),
-    (link)({rel="stylesheet", href="css_comp.css"})(),    
+    (title)(){config.website_title}(title),   
     (link)({rel="preconnect", href="https://fonts.googleapis.com"})(),
     (link)({rel="preconnect", href="https://fonts.gstatic.com", crossorigin = true})(),
     (link)({href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&family=Quicksand&display=swap", rel="stylesheet"})(),    
@@ -35,13 +30,15 @@ MainPage.Body = {
         }){
             "LuaSparks✨"
         }(h1),
-        (h1)({style=
+        (h1)({
+            style=
             {
                 color = "white",
                 ["font-size"] = "1.5rem",
                 padding = "1rem",
                 ["text-align"] = "center"
-            }
+            },
+            state="user"
         }){
             "A fast, light Lua front-end framework."
         }(h1)

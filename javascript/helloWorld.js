@@ -1,3 +1,3 @@
 function helloWorld() {
-  console.log("Hello World");
+  State.get("user").update("Konstantin");
 }
